@@ -430,10 +430,13 @@ class _CustomPlatformViewState extends State<CustomPlatformView>
                             -signal.scrollDelta.dx, -signal.scrollDelta.dy);
                       }
                     },
-                    onPointerPanZoomUpdate: (ev) {
-                      _controller._setScrollDelta(
-                          ev.panDelta.dx, ev.panDelta.dy);
-                    },
+              onPointerPanZoomUpdate: (signal) {
+                if (signal.panDelta.dx.abs() > signal.panDelta.dy.abs()) {
+                  _controller._setScrollDelta(-signal.panDelta.dx, 0);
+                } else {
+                  _controller._setScrollDelta(0, signal.panDelta.dy);
+                }
+              },
                     child: MouseRegion(
                         cursor: _cursor,
                         onEnter: (ev) {
